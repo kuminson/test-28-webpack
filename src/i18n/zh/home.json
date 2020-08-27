@@ -1,0 +1,6 @@
+{
+  "title": "这是测试首页",
+  "Interpolation": "我的名字是{{YY}}",
+  "date": "现在是 {{date, LL}}",
+  "label": "这是{{- imgVal}}"
+}

@@ -1,0 +1,6 @@
+{
+  "title": "テスト用ホームページ",
+  "Interpolation": "私の名前は{{name}}",
+  "date": "現在は{{date, LL}}",
+  "label": "これは{{- imgVal}}"
+}
