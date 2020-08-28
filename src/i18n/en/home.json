@@ -1,6 +1,0 @@
-{
-  "title": "The test home page",
-  "Interpolation": "my name is {{name}}",
-  "date": "new is {{date, LL}}",
-  "label": "this is {{- imgVal}}"
-}

@@ -5,9 +5,12 @@ const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
+const { getI18nextPatterns } = require('./i18nextUtils')
 
-
-
+const i18nPatterns = getI18nextPatterns(
+  path.resolve(__dirname, './src/locales/'),
+  path.resolve(__dirname, './dist/locales/')
+)
 
 module.exports = {
   mode: 'production',
@@ -42,7 +45,7 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        {from: path.resolve(__dirname, './src/i18n'), to: path.resolve(__dirname, './dist/i18n')}
+        ...i18nPatterns
       ]
     })
   ]

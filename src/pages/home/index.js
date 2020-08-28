@@ -24,7 +24,7 @@ i18next
     defaultNS: 'home',
     debug: true,
     backend: {
-      loadPath: '/i18n/{{lng}}/{{ns}}.json'
+      loadPath: '/locales/{{lng}}/{{ns}}.json'
     },
     interpolation: {
       format: function (value, format) {
@@ -40,8 +40,8 @@ i18next
 
 /**
  * 根据data-i18n，给html加上国际化
- * @param i18nData
- * @param t
+ * @param {Object} i18nData - 国际化用的变量
+ * @param {Function} t - 获取国际化方法
  */
 function i18nextHtml (i18nData, t) {
   // 获取全部i18next的html
@@ -65,7 +65,12 @@ function i18nextHtml (i18nData, t) {
         let setList = set.split(',')
         setList.forEach((item) => {
           const itemList = item.split(':')
-          option[itemList[0]] = i18nData[itemList[1]]
+          // 如果是i18nData对象变量
+          if (itemList[1].search(/^'.+'$/) !== -1) {
+            option[itemList[0]] = itemList[1].replace(/^'|'$/g, '')
+          } else { // 如果是字符串
+            option[itemList[0]] = i18nData[itemList[1]]
+          }
         })
       } else {
         option = null
