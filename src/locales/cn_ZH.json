@@ -1,1 +1,13 @@
-{}
+{
+    "home": {
+        "label": "这是{{- imgVal}}",
+        "date": "现在是{{date, LL}}",
+        "Interpolation": "我的名字是{{name}}",
+        "title": "测试首页"
+    },
+    "common": {
+        "button": {
+            "submit": "提交"
+        }
+    }
+}
