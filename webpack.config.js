@@ -34,7 +34,7 @@ module.exports = {
     //设置每一次build之前先删除dist
     new CleanWebpackPlugin(),
     new MomentLocalesPlugin({
-      localesToKeep: ['ja', 'zh-cn'],
+      localesToKeep: ['ja', 'zh-cn', 'zh-tw'],
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/pages/home/index.html')

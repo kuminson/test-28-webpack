@@ -11,7 +11,13 @@ const i18nData = {
 
 
 i18next.on('languageChanged', lng => {
-  moment.locale(lng)
+  const lngChange = {
+    'cn_ZH': 'zh-cn',
+    'zh_Hant': 'zh-tw',
+    'ja': 'ja',
+    'en': 'en'
+  }
+  moment.locale(lngChange[lng])
 })
 
 
@@ -19,7 +25,7 @@ i18next
   .use(Backend)
   .init({
     fallbackLng: 'en',
-    lng: 'zh-cn',
+    lng: 'cn_ZH',
     ns: ['home', 'common'],
     defaultNS: 'home',
     debug: true,
