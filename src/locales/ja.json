@@ -1,1 +1,13 @@
-{}
+{
+    "home": {
+        "label": "これは{{- imgVal}}",
+        "date": "現在は{{date, LL}}",
+        "Interpolation": "私の名前は{{name}}",
+        "title": "テストトップページ"
+    },
+    "common": {
+        "button": {
+            "submit": "提出"
+        }
+    }
+}
