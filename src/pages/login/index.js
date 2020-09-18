@@ -1,16 +1,13 @@
+import './index.scss'
+
 import i18next, {i18nextConfig} from '@/i18n/index'
 import {i18nextHtml} from '@/i18n/i18nextUtils'
 import Api from '@/http/api'
 import {CancelHttp} from '@/http/utils'
 
-import './index.scss'
-
-import vue from 'images/vue.png'
-
 
 const i18nData = {
   myName: 'superman',
-  myLabel: '<img src="' + vue + '" />',
   dateName: new Date()
 }
 
@@ -40,11 +37,8 @@ i18next
   })
 
 
-// console.log('key是否存在', i18next.exists('Interpolation'))
+
 setTimeout(() => {
-  console.log('key是否存在 2秒后', i18next.exists('Interpolation'))
-  console.log('测试异步获取i18n', i18next.t('Interpolation', {name: '测试'}))
+  console.log('key是否存在 2秒后', i18next.exists('title'))
+  console.log('测试异步获取i18n', i18next.t('title'))
 }, 2000)
-
-
-

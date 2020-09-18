@@ -5,9 +5,19 @@
   <title>test</title>
 </head>
 <body>
-  <div data-i18n="title">a lala al</div>
+  <div data-i18n="title" class="lala">a lala al</div>
   <div data-i18n="[html]label{{imgVal: myLabel}}">a ba ab ab </div>
   <div data-i18n="[html]date{{date: dateName}};[title]Interpolation{{name: 'html'}}">a ba ab ab </div>
-  <input type="text" data-i18n="[placeholder]Interpolation{{name: myName}};[value]common:button.submit">
+  <input class="input" type="text" data-i18n="[placeholder]Interpolation{{name: myName}};[value]common:button.submit">
+  <!--<img src="<%= require('images/vue.png') %>">-->
+  <img src="~images/vue.png">
+  <picture>
+    <source srcset="~images/test/test@1x.webp 1x,~images/test/test@2x.webp 2x,~images/test/test@3x.webp 3x" type="image/webp">
+    <source srcset="~images/test/test.jpg 1x,~images/test/test@2x.jpg 2x,~images/test/test@3x.jpg 3x" type="image/jpeg">
+    <img src="~images/test/test.jpg" alt="">
+  </picture>
+  <!--<img src="~images/test/test.jpg" srcset="~images/test/test.jpg 1x,~images/test/test@2x.jpg 2x,~images/test/test@3x.jpg 3x" alt="">-->
+  <div class="testcss"></div>
+  <div class="ejs"><%= htmlWebpackPlugin.options.title %></div>
 </body>
 </html>

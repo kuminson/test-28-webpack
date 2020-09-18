@@ -1,0 +1,23 @@
+@import "~@/assets/style/utils";
+body {
+  background-color: #CCC;
+  display: flex;
+  flex-direction: column;
+}
+
+.lala {
+  background-image: url('~images/vue.png');
+}
+
+.input{
+  background-image: url('~images/vue.png');
+}
+
+.testcss{
+  width: 300px;
+  height: 300px;
+  background-size: 100%;
+}
+
+@include webp('.testcss', '~images/test/test', 'jpg')
+

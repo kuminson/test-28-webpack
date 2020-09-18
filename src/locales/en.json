@@ -9,5 +9,18 @@
     "Interpolation": "my name is {{name}}",
     "date": "new is {{date, LL}}",
     "label": "this is {{- imgVal}}"
+  },
+  "login": {
+    "title": "the login page"
+  },
+  "error": {
+    "serverError": "Server request failed",
+    "timeout": "Request timeout please try again later",
+    "noResponse": "The server request was not responded",
+    "20001": "user no time",
+    "20002": "user no time permissions",
+    "20003": "user no time coin",
+    "40001": "need login",
+    "40002": "need authorize"
   }
 }

@@ -1,0 +1,39 @@
+@mixin ratio-bg-image($url, $ext, $webp: false) {
+  @media
+  not screen and (-webkit-min-device-pixel-ratio: 2)     ,
+  not screen and (        min-device-pixel-ratio: 2)     ,
+  not screen and (                min-resolution: 192dpi),
+  not screen and (                min-resolution: 2dppx) {
+    @if $webp {
+      background-image: url("#{$url}@1x.#{$ext}");
+    } @else {
+      background-image: url("#{$url}.#{$ext}");
+    }
+  }
+
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2)      and (-webkit-max-device-pixel-ratio: 2.9),
+  only screen and (        min-device-pixel-ratio: 2)      and (        max-device-pixel-ratio: 2.9),
+  only screen and (                min-resolution: 192dpi) and (                max-resolution: 287dpi),
+  only screen and (                min-resolution: 2dppx)  and (                max-resolution: 2.9dppx){
+    background-image: url("#{$url}@2x.#{$ext}");
+  }
+
+
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 3)     ,
+  only screen and (        min-device-pixel-ratio: 3)     ,
+  only screen and (                min-resolution: 288dpi),
+  only screen and (                min-resolution: 3dppx) {
+    background-image: url("#{$url}@3x.#{$ext}");
+  }
+}
+
+@mixin webp($select, $url, $ext) {
+  .no-webp #{$select}{
+    @include ratio-bg-image($url, $ext)
+  }
+  .webp #{$select}{
+    @include ratio-bg-image($url, 'webp', true)
+  }
+}
