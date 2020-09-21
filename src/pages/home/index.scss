@@ -19,5 +19,5 @@ body {
   background-size: 100%;
 }
 
-@include webp('.testcss', '~images/test/test', 'jpg')
+@include webp('.testcss', '~images/test/test', 'jpg', 3)
 

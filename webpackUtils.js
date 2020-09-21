@@ -70,7 +70,6 @@ module.exports.getHtmlPlugin = (pages, favicon) => {
   dirFiles.forEach(item => {
     entry[item] = path.resolve(pages, item, 'index.js')
     const plugin = new HtmlWebpackPlugin({
-      title: 'Custom template',
       template: path.resolve(pages, item, 'index.html'),
       filename: item + '.html',
       favicon: favicon,
