@@ -21,3 +21,18 @@ body {
 
 @include webp('.testcss', '~images/test/test', 'jpg', 3)
 
+.test-origin-border{
+  margin: 20px;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #000;
+}
+
+
+.test-transform-border{
+  margin: 20px;
+  width: 100px;
+  height: 100px;
+}
+
+@include one-px('.test-transform-border', #000, all, 20px)

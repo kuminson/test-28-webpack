@@ -39,3 +39,68 @@
     @include ratio-bg-image($url, 'webp', $ratio, true)
   }
 }
+
+
+// 1px线
+@mixin one-px ($select, $color, $type: h, $radius: initial) {
+  @media
+  not screen and (-webkit-min-device-pixel-ratio: 2)     ,
+  not screen and (        min-device-pixel-ratio: 2)     ,
+  not screen and (                min-resolution: 192dpi),
+  not screen and (                min-resolution: 2dppx) {
+    #{$select} {
+      @if $type == h {
+        border-top: 1px solid $color;
+      } @else if $type == v {
+        border-left: 1px solid $color;
+      } @else if $type == all {
+        border: 1px solid $color;
+      }
+      border-radius: $radius;
+    }
+  }
+
+  @media
+  screen and (-webkit-min-device-pixel-ratio: 2)     ,
+  screen and (        min-device-pixel-ratio: 2)     ,
+  screen and (                min-resolution: 192dpi),
+  screen and (                min-resolution: 2dppx) {
+    #{$select} {
+      position: relative;
+      @if $type == h {
+        border-top: 1px solid transparent;
+      } @else if $type == v {
+        border-left: 1px solid transparent;
+      } @else if $type == all {
+        border: 1px solid transparent;
+      }
+    }
+    #{$select}:before {
+      content: '';
+      display: block;
+      position: absolute;
+      border-radius: $radius;
+      @if $type == h {
+        top: -1px;
+        left: 0;
+        right: 0;
+        border-top: 1px solid $color;
+        transform: scaleY(0.5);
+      } @else if $type == v {
+        top: 0;
+        left: -1px;
+        bottom: 0;
+        border-left: 1px solid $color;
+        transform: scaleX(0.5);
+      } @else if $type == all {
+        top: calc(-1px - 50%);
+        left: calc(-1px - 50%);
+        right: calc(-1px - 50%);
+        bottom: calc(-1px - 50%);
+        border: 1px solid $color;
+        transform: scale(0.5);
+      }
+    }
+  }
+}
+
