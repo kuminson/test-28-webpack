@@ -142,3 +142,22 @@ export class CancelHttp {
     delete this.sources[key]
   }
 }
+
+/**
+ * 测试用方法
+ * @param a
+ * @param b
+ * @return {*}
+ */
+export function add (a, b) {
+  return a + b
+}
+
+/**
+ * 测试用方法
+ * @param selector
+ */
+export function addChild (selector) {
+  const dom = document.querySelector(selector)
+  dom.innerHTML = `<div>lalala</div>`
+}
