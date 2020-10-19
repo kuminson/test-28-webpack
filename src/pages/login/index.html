@@ -6,5 +6,46 @@
 </head>
 <body>
   <div data-i18n="title">login</div>
+  <div class="form">
+    <div class="row"><input type="text" class="name" data-validate="name" placeholder="name"></div>
+    <div class="row"><input type="password" class="password" data-validate="password" placeholder="password"></div>
+    <div class="row"><input type="password" class="confirm-password" data-validate="confirmPassword" placeholder="confirm password"></div>
+    <div class="row"><input type="text" class="email" data-validate="email" placeholder="email"></div>
+    <div class="row"><textarea class="address" data-validate="address" cols="30" rows="4" placeholder="address"></textarea></div>
+    <div class="row"><div class="special" data-validate="special" data-validate-value="zero">zero</div></div>
+    <div class="row">
+      <label>
+        <input type="radio" class="radio" data-validate="gender" name="gender" value="male">
+        男
+      </label>
+      <label>
+        <input type="radio" class="radio" data-validate="gender" name="gender" value="female">
+        女
+      </label>
+    </div>
+    <div class="row">
+      <label>
+        <input type="checkbox" class="checkbox" data-validate="equipment" name="equipment" value="mac">
+        mac
+      </label>
+      <label>
+        <input type="checkbox" class="checkbox" data-validate="equipment" name="equipment" value="pc">
+        pc
+      </label>
+      <label>
+        <input type="checkbox" class="checkbox" data-validate="equipment" name="equipment" value="mobile">
+        mobile
+      </label>
+    </div>
+    <div class="row">
+      <label>
+        <input type="checkbox" class="checkbox" data-validate="agreement" value="agree">
+        我已同意相关协议
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <button id="submit">提交</button>
+  </div>
 </body>
 </html>
