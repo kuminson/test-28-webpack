@@ -59,3 +59,113 @@ export function getInputValue (formSelector, transform) {
 
   return formObj
 }
+
+/**
+ * 输入框内容过滤
+ * @param {string} formSelector - form表单css选择器
+ * @param {object} config - 每个输入框标签对应的过滤方法
+ * config = {key: [func1, func2]}
+ *        {string} key - 标签data-validate的值
+ *        {function} func1(val) - 内容过滤方法
+ *                {string} val - 输入框内容
+ */
+export function inputfilter (formSelector, config) {
+
+  const formEl = document.querySelector(formSelector)
+
+  const itemEls = formEl.querySelectorAll('[data-validate]')
+
+  const textType = ['text', 'password', 'number', 'email', 'url', 'textarea']
+
+  const elementType = ['INPUT', 'TEXTAREA']
+
+  const inputEls = {}
+
+  for (let item of itemEls) {
+    if (elementType.indexOf(item.nodeName) === -1) {
+      continue
+    }
+    if (!item.type || textType.indexOf(item.type) === -1) {
+      continue
+    }
+    inputEls[item.dataset.validate] = item
+  }
+
+  for (let key in config) {
+    inputEls[key].addEventListener('input', (e) => {
+      let val = e.target.value
+      for (let item of config[key]) {
+        val = item(val)
+      }
+      e.target.value = val
+    }, false)
+  }
+}
+
+
+/**
+ * 输入框内容过滤方法生成集合
+ * @type {{onlyNumber(*): *, noZeroBefore(): *, max(*=): *, min(*=): *}}
+ */
+export const inputFilterFunc = {
+  /**
+   * 生成只有数字过滤器方法
+   * @param {number} n - 保留几位小数 -1为无限个小数 0为没有小数
+   * @return {function(*)} - 返回过滤器
+   */
+  onlyNumber (n) {
+    let re
+    if (n === 0) {
+      re = new RegExp(/^\d+/)
+    } else if (n === -1) {
+      re = new RegExp('^\\d+\\.?(?:\\d)*')
+    } else {
+      re = new RegExp('^\\d+\\.?(?:\\d{0,' + n + '})?')
+    }
+    return (val) => {
+      const newVal = val.match(re)
+      let res = ''
+      if (newVal !== null) {
+        res = newVal[0]
+      }
+      return res
+    }
+  },
+  /**
+   * 生成 数字前没有0 的过滤器方法
+   * @return {function(*)}
+   */
+  noZeroBefore () {
+    return (val) => {
+      return val.replace(/^0+([1-9][0-9]*(?:\.|\.[0-9]+)?)$/, '$1')
+    }
+  },
+  /**
+   * 生成 数字必须小于n 的过滤器方法
+   * @param {number} n - 数字最大值
+   * @return {function(*=)}
+   */
+  max (n) {
+    return (val) => {
+      let res = val
+      if (Number(val) > n) {
+        res = String(n)
+      }
+      return res
+    }
+  },
+  /**
+   * 生成 数字必须大于n 的过滤器方法
+   * @param {number} n - 数字最小值
+   * @return {function(*=)}
+   */
+  min (n) {
+    return (val) => {
+      let res = val
+      if (Number(val) < n) {
+        res = String(n)
+      }
+      return res
+    }
+  }
+}

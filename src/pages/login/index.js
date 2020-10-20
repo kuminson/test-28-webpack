@@ -3,7 +3,7 @@ import './index.scss'
 import i18next, {i18nextConfig} from '@/i18n/index'
 import {i18nextHtml} from '@/i18n/i18nextUtils'
 import Schema from 'async-validator'
-import {getInputValue} from '@/assets/js/utils'
+import {getInputValue, inputfilter, inputFilterFunc} from '@/assets/js/utils'
 
 const i18nData = {
   myName: 'superman',
@@ -106,4 +106,20 @@ window.onload = () => {
       console.log('未通过效检', errors, fields);
     })
   })
+
+  const config = {
+    age: [
+      inputFilterFunc.onlyNumber(-1),
+      inputFilterFunc.max(100),
+      inputFilterFunc.noZeroBefore()
+    ]
+  }
+  inputfilter('.form', config)
 }
+
+
+
+
+
+
+// 自动化测试表单
