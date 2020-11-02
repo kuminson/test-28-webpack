@@ -3,7 +3,7 @@ import './index.scss'
 import i18next, {i18nextConfig} from '@/i18n/index'
 import {i18nextHtml} from '@/i18n/i18nextUtils'
 import Schema from 'async-validator'
-import {getInputValue, inputfilter, inputFilterFunc} from '@/assets/js/utils'
+import {getInputValue, inputfilter, inputFilterFunc, autoFillForm} from '@/assets/js/utils'
 
 const i18nData = {
   myName: 'superman',
@@ -37,6 +37,15 @@ const descriptor = {
       // 正则
       type: 'string', pattern: new RegExp('^[a-zA-Z]+$'),
       message: 'Names can only be letters'
+    }, {
+      type: 'string', max: 32,
+      message: 'The name should be less than 32 bits'
+    }
+  ],
+  age: [
+    {
+      type: 'string', required: true,
+      message: 'The age cannot be empty'
     }
   ],
   password: [
@@ -81,6 +90,12 @@ const descriptor = {
         })
       }
     }
+  ],
+  equipment: [
+    {
+      type: 'array', required: true,
+      message: 'The equipment cannot be empty'
+    }
   ]
 }
 
@@ -115,11 +130,46 @@ window.onload = () => {
     ]
   }
   inputfilter('.form', config)
+  // formTest('.form', false)
+
+  const testConfig = [
+    // 输入框
+    {
+      key: 'name',
+      safe: 'asdfa',
+      test: [
+        {type: 'required'},
+        {type: 'max', max: 32, text: 'a'},
+        {type: 'space', space: 'all', text: 'adbc'},
+        {type: 'text', text: 'asd ads'},
+        {type: 'text', text: '1231'}
+      ]
+    },
+    {
+      key: 'age',
+      safe: '24',
+      test: [
+        {type: 'required'},
+        // {type: 'space', space: 'all', text: '99'},
+        {type: 'text', text: '3 1'},
+        {type: 'text', text: '1231'}
+      ]
+    },
+    // 选择框
+    {
+      key: 'equipment',
+      safe: ['mac', 'pc'],
+      test: [
+        {type: 'required'}
+      ]
+    }
+  ]
+  const aff = new autoFillForm({
+    testConfig: testConfig,
+    validator: validator,
+    formSelector: '.form',
+  })
+  aff.test()
 }
 
 
-
-
-
-
-// 自动化测试表单

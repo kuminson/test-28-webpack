@@ -169,3 +169,271 @@ export const inputFilterFunc = {
     }
   }
 }
+
+/**
+ * 自动测试表单
+ * 依赖getInputValue方法
+ * @param {{}} para - 初始化参数
+ * {[]} para.testConfig - 测试配置
+ * {{}} para.validator - 测试库async-validator的实例
+ * {string} para.formSelector - 表单选择器
+ * @method test() - 进行边缘测试
+ * @method fill() - 填充安全值
+ */
+
+/**
+ * para.testConfig 参考
+ * [
+ * // 输入框
+ * {
+ *   key: 'name', // data-validate的值
+ *   safe: 'asdfa', // 安全值
+ *   test: [  // 要进行的边缘测试
+ *     {type: 'required'},
+ *     {type: 'max', max: 32, text: 'a'},
+ *     {type: 'space', space: 'all', text: 'adbc'},
+ *     {type: 'text', text: 'asd ads'},
+ *     {type: 'text', text: '1231'}
+ *   ]
+ * },
+ * // 选择框
+ * {
+ *   key: 'equipment',
+ *   safe: ['mac', 'pc'],
+ *   test: [
+ *     {type: 'required'}
+ *   ]
+ * }
+ * ]
+ */
+export class autoFillForm {
+
+  constructor (para) {
+    // 表单类型
+    this.itemType = {
+      textType: ['text', 'password', 'number', 'email', 'url', 'textarea'],
+      checkType: ['checkbox', 'radio'],
+    }
+
+    // 输入框通用测试方法
+    this._testValTextFunc = {
+      // 必填
+      required () {
+        return ''
+      },
+      // 文本
+      text (config) {
+        return config.text
+      },
+      // 最大值
+      max (config) {
+        const num = Math.ceil(config.max / config.text.length) + 1
+        let text = ''
+        for (let i = 0; i < num; i++) {
+          text += config.text
+        }
+        return text
+      },
+      // 空格
+      space (config) {
+        let text = config.text
+
+        switch (config.space) {
+          case 'before':
+            text = ' ' + text
+            break
+          case 'after':
+            text = text + ' '
+            break
+          case 'all':
+            text = ' ' + text + ' '
+        }
+
+        return text
+      }
+    }
+
+    // 选择框通用测试方法
+    this._testValSelectFunc = {
+      required () {
+        return []
+      }
+    }
+
+    // 测试用配置
+    this.testConfig = para.testConfig
+
+    // 效验实例
+    this.validator = para.validator
+
+    this.inputEls = this._getInputEls(para.formSelector)
+  }
+
+  // 获取表单元素
+  _getInputEls (formSelector) {
+    // 表单元素
+    const formEl = document.querySelector(formSelector)
+    const itemEls = formEl.querySelectorAll('[data-validate]')
+
+    // 获取所有input元素
+    const inputEls = {}
+
+    for (let item of itemEls) {
+      // 如果是输入框
+      if (item.type && this.itemType.textType.indexOf(item.type) !== -1) {
+        inputEls[item.dataset.validate] = item
+      }
+      // 如果是选择
+      if (item.type && this.itemType.checkType.indexOf(item.type) !== -1) {
+        if (inputEls[item.dataset.validate] === undefined) {
+          inputEls[item.dataset.validate] = []
+        }
+        inputEls[item.dataset.validate].push(item)
+        continue
+      }
+      // 如果是特殊类型
+      // if (item.dataset.validateValue !== undefined) {
+      //   inputEls[item.dataset.validate] = item
+      // }
+    }
+
+    return inputEls
+  }
+
+  test () {
+    this._fillTest(true)
+  }
+
+  fill () {
+    this._fillTest(false)
+  }
+
+  async _fillTest (isTest) {
+    // 对input元素进行边缘测试
+    let testState = true
+
+    for (let item of this.testConfig) {
+      // 判断key对应的元素是否存在
+      if (this.inputEls[item.key] === undefined) {
+        continue
+      }
+
+      // 调用测试方法
+      if (item.test !== undefined && isTest) {
+
+
+        for (let testItem of item.test) {
+          const testRes = await new Promise((resolve) => {
+            // 获取焦点
+            if (this.inputEls[item.key].length === undefined) {
+              this.inputEls[item.key].focus()
+            } else {
+              this.inputEls[item.key][0].focus()
+            }
+
+            // 注入文本
+            let itemVal = null
+            // 如果是输入框
+            if (this.inputEls[item.key].length === undefined) {
+              itemVal = this._testValTextFunc[testItem.type](testItem)
+              this._setValText(this.inputEls[item.key], itemVal)
+            } else { // 如果是选择框
+              itemVal = this._testValSelectFunc[testItem.type](testItem)
+              this._setValSelect(this.inputEls[item.key], itemVal)
+            }
+
+            // 效验结果
+            setTimeout(() => {
+              const formObj = getInputValue('.form', (val, name, type) => {
+                if (type === 'input' && typeof val === 'string') {
+                  return val.trim()
+                }
+                return val
+              })
+              this.validator.validate(formObj).then(() => {
+                console.log('效检');
+                // 判断当前值与输入值 是否相等
+                const valEqualState = this._isSameVal(this.inputEls[item.key], itemVal, formObj[item.key])
+                // 如果当前值与输入值不同 则判为未通过
+                if (!valEqualState) {
+                  resolve(true)
+                } else {
+                  resolve(false)
+                }
+              }).catch(({ errors }) => {
+                console.log('效检', errors);
+                // 如果报错里含有目标元素 则边缘检测成功
+                for (let child of errors) {
+                  if (child.field === item.key) {
+                    resolve(true)
+                  }
+                }
+                // 如果报错里没有目标元素 判断值是否有变
+                const valEqualState = this._isSameVal(this.inputEls[item.key], itemVal, formObj[item.key])
+                if (!valEqualState) {
+                  resolve(true)
+                }
+                resolve(false)
+              })
+            }, 20)
+          })
+
+          if (!testRes) {
+            console.log('边缘测试未通过', testItem)
+            testState = false
+            break
+          }
+
+        }
+
+      }
+
+      // 注入安全内容
+      if (this.inputEls[item.key].length === undefined) {
+        this._setValText(this.inputEls[item.key], item.safe)
+      } else { // 如果是选择框
+        this._setValSelect(this.inputEls[item.key], item.safe)
+      }
+
+
+
+    }
+
+    if (testState) {
+      console.log('边缘测试 通过')
+    }
+  }
+
+  // 设置输入框内容
+  _setValText(els, val) {
+    const evt = new InputEvent('input', {
+      inputType: 'insertText',
+      data: val,
+      dataTransfer: null,
+      isComposing: false
+    });
+    els.value = val
+    els.dispatchEvent(evt)
+  }
+
+  // 设置选择框内容
+  _setValSelect(els, val) {
+    for (let item of els) {
+      if (val.indexOf(item.value) !== -1) {
+        item.checked = true
+      }
+    }
+  }
+
+  // 判断输入值是否不一样
+  _isSameVal (inputEls, testVal, inputVal) {
+    // 判断当前值与输入值 是否相等
+    let valEqualState = null
+    if (inputEls.length === undefined) {
+      valEqualState = testVal === inputVal
+    } else { // 如果是选择框
+      valEqualState = JSON.stringify(JSON.parse(JSON.stringify(testVal)).sort()) === JSON.stringify(JSON.parse(JSON.stringify(inputVal)).sort())
+    }
+    return valEqualState
+  }
+}
