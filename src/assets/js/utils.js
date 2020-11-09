@@ -301,7 +301,7 @@ export class autoFillForm {
   }
 
   test () {
-    this._fillTest(true)
+    return this._fillTest(true)
   }
 
   fill () {
@@ -401,7 +401,9 @@ export class autoFillForm {
 
     if (testState) {
       console.log('边缘测试 通过')
+      return true
     }
+    return false
   }
 
   // 设置输入框内容

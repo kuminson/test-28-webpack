@@ -169,7 +169,9 @@ window.onload = () => {
     validator: validator,
     formSelector: '.form',
   })
-  aff.test()
+  aff.test().then(val => {
+    console.log('val', val)
+  })
 }
 
 
