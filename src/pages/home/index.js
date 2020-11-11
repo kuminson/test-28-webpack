@@ -26,14 +26,14 @@ i18next
   })
   .then((t) => {
     i18nextHtml(i18nData, t)
-    const baidu = Api.testBaidu({
-      para: 123
-    })
-    baidu.then((data) => {
-      console.log('data >>>', data)
-    }).catch((err) => {
-      console.log('test >>>>', err)
-    })
+    // const baidu = Api.testBaidu({
+    //   para: 123
+    // })
+    // baidu.then((data) => {
+    //   console.log('data >>>', data)
+    // }).catch((err) => {
+    //   console.log('test >>>>', err)
+    // })
     // cancel.remove(baidu.mySourceKey)
     // cancel.fire(baidu.mySourceKey)
     // cancel.fireApi('testBaidu')

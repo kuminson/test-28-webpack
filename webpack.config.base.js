@@ -3,14 +3,9 @@ const path = require('path')
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 const { getI18nextPatterns, getHtmlPlugin } = require('./webpackUtils')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
-const testEjs = {
-  name: 'allalalala'
-}
 
 
 const i18nPatterns = getI18nextPatterns(
@@ -170,9 +165,6 @@ module.exports = {
     }),
     new webpack.DefinePlugin({                   // 配置的全局常量 (指定为生产环境，进而让一些library可以做一些优化)
       'process.env.env_config': JSON.stringify(process.env.env_config)
-    }),
-    new MomentLocalesPlugin({
-      localesToKeep: ['ja', 'zh-cn', 'zh-tw'], // 查询语种列表 https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'disabled', // 不启动展示打包报告的http服务器
