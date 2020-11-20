@@ -3,9 +3,10 @@ const path = require('path')
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const { getI18nextPatterns, getHtmlPlugin } = require('./webpackUtils')
+const { getI18nextPatterns, getHtmlPlugin, htmlWebpackAttributesPlugin } = require('./webpackUtils')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
 
 
 const i18nPatterns = getI18nextPatterns(
@@ -175,6 +176,7 @@ module.exports = {
         ...i18nPatterns
       ]
     }),
-    ...res.htmlPlugin
+    ...res.htmlPlugin,
+    new htmlWebpackAttributesPlugin()
   ]
 }
