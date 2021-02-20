@@ -1,0 +1,136 @@
+@import "~@/assets/style/crop.scss";
+@font-face {
+  font-family: 'ex2';
+  src: url("~@/assets/fonts/EurostileLTStd-Ex2.otf");
+}
+
+body {
+  background-color: #EEE;
+  padding: 0;
+  margin: 0;
+}
+.content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: yellowgreen;
+}
+.other{
+  font-size: 20px;
+  line-height: 1.5;
+}
+.title{
+  flex-grow: 0;
+  //font-size: 20px;
+  //line-height: 1.5;
+  font-family: 'ex2','PingFang SC',Helvetica,Arial,Verdana,sans-serif;
+  background-color: greenyellow;
+  @include text-crop-ex2($line-height: 1.5, $font-size: 20px)
+}
+
+
+.test{
+  height: 30px;
+  display: flex;
+  &.woqu{
+    .test-l{
+      display: block;
+    }
+  }
+  &.zdld{
+    .test-l{
+      opacity: 1;
+    }
+  }
+}
+.test-f{
+  width: 30px;
+  height: 100%;
+  background-color: yellowgreen;
+}
+.test-input{
+  height: 100%;
+  width: 100px;
+  box-sizing: border-box;
+}
+.test-l{
+  width: 50px;
+  height: 100%;
+  background-color: yellowgreen;
+  opacity: 0;
+  display: none;
+  transition: all 0.3s;
+}
+.test-input:focus, .test-input:active{
+  background-color: greenyellow;
+  outline: none;
+}
+.test-input:focus~.test-l{
+}
+
+
+.ot{
+  width: 100px;
+  height: 30px;
+  background-color: aquamarine;
+  overflow: hidden;
+}
+.ot-text{
+  height: 100%;
+  max-width: 120px;
+}
+
+
+
+.tf{
+
+  .tf-btn{
+    width: 100px;
+    height: 100px;
+    background-color: aquamarine;
+    margin-top: 10px;
+  }
+  .tf-btn1{
+
+  }
+  .tf-label{
+    display: block;
+    width: 100px;
+    .tf-btn2{
+      overflow: hidden;
+    }
+    .tf-input{
+      transform: translateX(-400px);
+    }
+  }
+  .tf-btn3{
+
+  }
+  &:focus-within{
+    border: 1px solid black;
+  }
+}
+
+.parent{
+  position: relative;
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+}
+.target{
+  width: 100%;
+  height: 100%;
+}
+.target:hover+.brother{
+  background-color: greenyellow;
+}
+.brother{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: #999;
+}

@@ -1,15 +1,10 @@
-const webpack = require('webpack')
-const path = require('path')
-const webpackConfigBase = require('./webpack.config.base');
+const webpackConfigBase = require('./webpack.config.base')
 const MockWebpackPlugin = require('mock-webpack-plugin')
-const {merge} = require("webpack-merge");
-
-
-
+const { merge } = require('webpack-merge')
 
 const webpackConfig = {
   mode: 'development',
-  devtool: 'source-map',
+  devtool: 'eval-cheap-module-source-map',
   plugins: [
     // new MockWebpackPlugin({
     //   config: {

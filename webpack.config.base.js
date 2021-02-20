@@ -39,7 +39,7 @@ module.exports = {
       images: path.resolve(__dirname, 'src/assets/images/')
     }
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
   devServer: {
     contentBase: '/',
     historyApiFallback: false,
